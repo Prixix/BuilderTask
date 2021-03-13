@@ -1,0 +1,5 @@
+name: BuilderTask
+version: ${project.version}
+main: de.prixix.buildertask.BuilderTask
+api-version: 1.16
+authors: [ Prixix ]
