@@ -1,5 +1,7 @@
 package de.prixix.buildertask;
 
+import de.prixix.buildertask.utils.Messages;
+import de.prixix.buildertask.utils.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -16,8 +18,8 @@ public final class BuilderTask extends JavaPlugin {
     private static BuilderTask instance;
     public FileConfiguration configuration = this.getConfig();
 
-    private Server server = Bukkit.getServer();
-    private ConsoleCommandSender console = server.getConsoleSender();
+    public Server server = Bukkit.getServer();
+    public ConsoleCommandSender console = server.getConsoleSender();
 
     @Override
     public void onEnable() {
@@ -28,6 +30,7 @@ public final class BuilderTask extends JavaPlugin {
         checkVersion();
         initializeCommands();
         initializeEvents();
+        MySQL.connect();
     }
 
     private void checkVersion() {
@@ -69,5 +72,6 @@ public final class BuilderTask extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        MySQL.disconnect();
     }
 }

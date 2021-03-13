@@ -1,4 +1,6 @@
-package de.prixix.buildertask;
+package de.prixix.buildertask.utils;
+
+import de.prixix.buildertask.BuilderTask;
 
 public class Messages {
 
