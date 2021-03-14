@@ -1,5 +1,6 @@
 package de.prixix.buildertask;
 
+import de.prixix.buildertask.commands.BuilderCommand;
 import de.prixix.buildertask.utils.Messages;
 import de.prixix.buildertask.utils.MySQL;
 import org.bukkit.Bukkit;
@@ -12,6 +13,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public final class BuilderTask extends JavaPlugin {
 
@@ -31,6 +35,8 @@ public final class BuilderTask extends JavaPlugin {
         initializeCommands();
         initializeEvents();
         MySQL.connect();
+
+        createTables();
     }
 
     private void checkVersion() {
@@ -54,7 +60,6 @@ public final class BuilderTask extends JavaPlugin {
     private void loadConfiguration() {
         configuration.options().copyDefaults(true);
         saveConfig();
-        console.sendMessage(Messages.prefix + "Config has been loaded");
     }
 
     public static BuilderTask getInstance() {
@@ -62,11 +67,45 @@ public final class BuilderTask extends JavaPlugin {
     }
 
     private void initializeCommands() {
-
+        this.getCommand("builder").setExecutor(new BuilderCommand());
     }
 
     private void initializeEvents() {
 
+    }
+
+    private void createTables() {
+        Connection connection = MySQL.getConnection();
+
+        try {
+            connection.createStatement().execute(
+                    "CREATE TABLE IF NOT EXISTS `task` (\n" +
+                    "\t`TaskID` INT(255) NOT NULL AUTO_INCREMENT,\n" +
+                    "\t`Name` VARCHAR(255) NOT NULL,\n" +
+                    "\t`World` VARCHAR(255) NOT NULL,\n" +
+                    "\t`Description` VARCHAR(255) NOT NULL DEFAULT '/',\n" +
+                    "\t`expiryDate` TIMESTAMP,\n" +
+                    "\t`creationDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n" +
+                    "\t`Assignee` VARCHAR(255),\n" +
+                    "\t`Creator` VARCHAR(255),\n" +
+                    "\tPRIMARY KEY (`TaskID`)\n" +
+                    ");");
+
+            connection.createStatement().execute(
+                    "CREATE TABLE IF NOT EXISTS `builder` (\n" +
+                            "\t`UUID` VARCHAR(255) NOT NULL,\n" +
+                            "\t`Registered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                            "\tPRIMARY KEY (`UUID`)\n" +
+                            ");");
+        } catch (SQLException ignored) {}
+    }
+
+    public boolean createBuilder(UUID uuid) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        String uuidString = uuid.toString();
+
+        return connection.createStatement().execute("INSERT INTO builder (UUID) VALUES ('" + uuidString + "');");
     }
 
     @Override

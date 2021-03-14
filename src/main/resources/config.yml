@@ -7,5 +7,9 @@ MySQL:
 
 
 Messages:
-  Prefix: '&8[&aBuilderTask&8] &7'
-  NoPermission: '&cYou are not allowed to use this command.'
+  Prefix: "&8[&6BuilderTask&8] &7"
+  NoPermission: "&cYou are not allowed to use this command."
+  PlayerNotOnline: "&cThe selected player is not online."
+  BuilderNoOption: "&cYou have not selected a option."
+  BuilderCreated: "&aThe builder has successfully been created."
+  BuilderCreatedFailure: "&cError while creating the builder."
