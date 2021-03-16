@@ -26,7 +26,7 @@ public class BuilderCommand implements CommandExecutor {
 
                         if(player != null) {
                             try {
-                                builderTask.createBuilder(player.getUniqueId());
+                                builderTask.createBuilder(player.getUniqueId(), player.getName());
                                 sender.sendMessage(Messages.builderCreated);
                             } catch (SQLException e) {
                                 e.printStackTrace();
@@ -36,6 +36,27 @@ public class BuilderCommand implements CommandExecutor {
                             //Target not online
                             sender.sendMessage(Messages.playerNotOnline);
                         }
+                    } else {
+                        sender.sendMessage(Messages.builderMissingArgument);
+                    }
+                }
+
+                if(option.equalsIgnoreCase("remove")) {
+                    if(args.length == 2) {
+                        try {
+                            String builderUUID = builderTask.getBuilderUUIDByName(args[1]);
+                            if(builderUUID != null) {
+                                builderTask.removeBuilder(builderUUID);
+                                sender.sendMessage(Messages.builderRemoved);
+                            } else {
+                                sender.sendMessage(Messages.builderRemovedNotExists);
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            sender.sendMessage(Messages.builderRemovedFailure);
+                        }
+                    } else {
+                        sender.sendMessage(Messages.builderMissingArgument);
                     }
                 }
 

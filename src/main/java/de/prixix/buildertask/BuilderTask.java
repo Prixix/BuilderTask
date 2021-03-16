@@ -14,7 +14,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.UUID;
 
 public final class BuilderTask extends JavaPlugin {
@@ -94,18 +96,37 @@ public final class BuilderTask extends JavaPlugin {
             connection.createStatement().execute(
                     "CREATE TABLE IF NOT EXISTS `builder` (\n" +
                             "\t`UUID` VARCHAR(255) NOT NULL,\n" +
+                            "\t`Name` VARCHAR(255) NOT NULL,\n" +
                             "\t`Registered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
                             "\tPRIMARY KEY (`UUID`)\n" +
                             ");");
         } catch (SQLException ignored) {}
     }
 
-    public boolean createBuilder(UUID uuid) throws SQLException {
+    public void createBuilder(UUID uuid, String name) throws SQLException {
         Connection connection = MySQL.getConnection();
 
-        String uuidString = uuid.toString();
+        connection.createStatement().execute("INSERT INTO builder (UUID, Name) VALUES ('" + uuid.toString() + "', '" + name + "');");
+    }
 
-        return connection.createStatement().execute("INSERT INTO builder (UUID) VALUES ('" + uuidString + "');");
+    public void removeBuilder(String uuid) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        String test = "DELETE FROM builder WHERE UUID='" + uuid + "';";
+
+        connection.createStatement().execute(test);
+        console.sendMessage(test);
+    }
+
+    public String getBuilderUUIDByName(String name) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM builder WHERE Name='" + name + "';");
+
+        if(resultSet.next()) return resultSet.getString("UUID");
+
+        return null;
     }
 
     @Override
