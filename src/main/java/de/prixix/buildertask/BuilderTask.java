@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public final class BuilderTask extends JavaPlugin {
@@ -112,10 +113,15 @@ public final class BuilderTask extends JavaPlugin {
     public void removeBuilder(String uuid) throws SQLException {
         Connection connection = MySQL.getConnection();
 
-        String test = "DELETE FROM builder WHERE UUID='" + uuid + "';";
+        connection.createStatement().execute("DELETE FROM builder WHERE UUID='" + uuid + "';");
+    }
 
-        connection.createStatement().execute(test);
-        console.sendMessage(test);
+    public ResultSet getAllBuilder() throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        return statement.executeQuery("SELECT Name FROM builder");
     }
 
     public String getBuilderUUIDByName(String name) throws SQLException {

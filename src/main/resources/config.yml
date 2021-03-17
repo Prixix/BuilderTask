@@ -17,3 +17,7 @@ Messages:
   BuilderRemoved: "&aThe builder has been removed."
   BuilderRemovedNotExists: "&cThe player is not registered."
   BuilderRemovedFailure: "&cError while removing the builder."
+  BuilderListHeader: "The current builder list:"
+  BuilderListPlayer: "&7-> &e[player]"
+  BuilderListError: "&cError while listing player."
+  BuilderListNoPlayers: "No Player is registered."

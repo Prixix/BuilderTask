@@ -19,6 +19,11 @@ public class Messages {
     public static String builderRemovedFailure = Messages.prefix + formatStringToChat(getMessageString("BuilderRemovedFailure"));
     public static String builderRemovedNotExists = Messages.prefix + formatStringToChat(getMessageString("BuilderRemovedNotExists"));
 
+    public static String builderListHeader = Messages.prefix + formatStringToChat(getMessageString("BuilderListHeader"));
+    public static String builderListPlayer = Messages.prefix + formatStringToChat(getMessageString("BuilderListPlayer"));
+    public static String builderListError = Messages.prefix + formatStringToChat(getMessageString("BuilderListError"));
+    public static String builderListNoPlayers = Messages.prefix + formatStringToChat(getMessageString("BuilderListNoPlayers"));
+
 
 
     private static String getMessageString(String name) {

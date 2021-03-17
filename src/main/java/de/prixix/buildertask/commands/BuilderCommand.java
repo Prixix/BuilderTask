@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BuilderCommand implements CommandExecutor {
@@ -57,6 +58,24 @@ public class BuilderCommand implements CommandExecutor {
                         }
                     } else {
                         sender.sendMessage(Messages.builderMissingArgument);
+                    }
+                }
+
+                if(option.equalsIgnoreCase("list")) {
+                    try {
+                        ResultSet listResult = builderTask.getAllBuilder();
+                        if(listResult.next()) {
+                            sender.sendMessage(Messages.builderListHeader);
+                            listResult.beforeFirst();
+                            while (listResult.next()) {
+                                sender.sendMessage(Messages.builderListPlayer.replace("[player]", listResult.getString("Name")));
+                            }
+                        } else {
+                            sender.sendMessage(Messages.builderListNoPlayers);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        sender.sendMessage(Messages.builderListError);
                     }
                 }
 
