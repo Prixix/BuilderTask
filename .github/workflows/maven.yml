@@ -9,24 +9,9 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs:
-  compile:
-
-    runs-on: ubuntu-latest
-    name: Compile Maven project
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.15
-    - name: Build with Maven
-      run: mvn clean compile
-      
+jobs: 
   build:
     runs-on: ubuntu-latest
-    needs: compile
     name: Build Maven project
     steps:
       - name: Step 1 - Checkout main branch from GitHub
