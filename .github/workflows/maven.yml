@@ -13,6 +13,7 @@ jobs:
   compile:
 
     runs-on: ubuntu-latest
+    name: Compile Maven project
 
     steps:
     - uses: actions/checkout@v2
