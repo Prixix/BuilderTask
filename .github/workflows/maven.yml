@@ -28,21 +28,9 @@ jobs:
     needs: compile
     name: Build Maven project
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Set up JDK 15
-      uses: actions/setup-java@v1
-      with:
-        java-version: 15
-    - name: Build and test project
-      run: mvn clean verify
-    - name: Upload Maven build artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: artifact
-        path: target/BuilderTask.jar
+      - name: Step 1 - Checkout main branch from GitHub
+        uses: actions/checkout@v2
+        with:
+          java-version: 1.15
+      - name: Setup 2 - Set up JDK 1.15
+      
