@@ -1,6 +1,7 @@
 package de.prixix.buildertask;
 
 import de.prixix.buildertask.commands.BuilderCommand;
+import de.prixix.buildertask.commands.TaskCommand;
 import de.prixix.buildertask.utils.Messages;
 import de.prixix.buildertask.utils.MySQL;
 import org.bukkit.Bukkit;
@@ -71,6 +72,7 @@ public final class BuilderTask extends JavaPlugin {
 
     private void initializeCommands() {
         this.getCommand("builder").setExecutor(new BuilderCommand());
+        this.getCommand("task").setExecutor(new TaskCommand());
     }
 
     private void initializeEvents() {
@@ -133,6 +135,12 @@ public final class BuilderTask extends JavaPlugin {
         if(resultSet.next()) return resultSet.getString("UUID");
 
         return null;
+    }
+
+    public void createTask(String uuid, String name, String world) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        connection.createStatement().execute("INSERT INTO task (Name, World, Creator) VALUES ('" + name + "', '" + world + "', '" + uuid + "');");
     }
 
     @Override
