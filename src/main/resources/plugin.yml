@@ -7,3 +7,4 @@ website: https://github.com/Prixix/BuilderTask
 
 commands:
   builder:
+  task:
