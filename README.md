@@ -20,7 +20,7 @@
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Prixix/BuilderTask/issues). 
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Prixix/BuilderTask/issues). You can also take a look at the [contributing guide](https://github.com/Prixix/BuilderTask/blob/main/CONTRIBUTING.md).
 
 ## Show your support
 

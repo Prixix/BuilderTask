@@ -17,7 +17,7 @@ public class BuilderCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender.hasPermission("buildertask.builder.edit")) {
+        if(sender.hasPermission("buildertask.edit")) {
             if(args.length != 0) {
                 String option = args[0];
 

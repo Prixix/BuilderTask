@@ -7,7 +7,6 @@ public class Messages {
     public static String prefix = formatStringToChat(getMessageString("Prefix"));
     public static String noPermission = Messages.prefix + formatStringToChat(getMessageString("NoPermission"));
     public static String playerNotOnline = formatStringToChat(getMessageString("PlayerNotOnline"));
-    public static String syntaxError = formatStringToChat(getMessageString("SyntaxError"));
 
 
     public static String builderNoOption = Messages.prefix + formatStringToChat(getMessageString("BuilderNoOption"));
@@ -24,10 +23,6 @@ public class Messages {
     public static String builderListPlayer = Messages.prefix + formatStringToChat(getMessageString("BuilderListPlayer"));
     public static String builderListError = Messages.prefix + formatStringToChat(getMessageString("BuilderListError"));
     public static String builderListNoPlayers = Messages.prefix + formatStringToChat(getMessageString("BuilderListNoPlayers"));
-
-    public static String taskCreationFailure = Messages.prefix + formatStringToChat(getMessageString("TaskCreationFailure"));
-    public static String taskCreationWorldNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskCreationWorldNotExists"));
-    public static String taskCreationSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskCreationSuccess"));
 
 
 
