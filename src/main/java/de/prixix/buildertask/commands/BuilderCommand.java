@@ -17,75 +17,73 @@ public class BuilderCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender.hasPermission("buildertask.builder.edit")) {
-            if(args.length != 0) {
-                String option = args[0];
-
-                if(option.equalsIgnoreCase("add")) {
-                    if(args.length == 2) {
-                        Player player = Bukkit.getPlayer(args[1]);
-
-                        if(player != null) {
-                            try {
-                                builderTask.createBuilder(player.getUniqueId(), player.getName());
-                                sender.sendMessage(Messages.builderCreated);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                sender.sendMessage(Messages.builderCreatedFailure);
-                            }
-                        } else {
-                            //Target not online
-                            sender.sendMessage(Messages.playerNotOnline);
-                        }
-                    } else {
-                        sender.sendMessage(Messages.builderMissingArgument);
-                    }
-                }
-
-                if(option.equalsIgnoreCase("remove")) {
-                    if(args.length == 2) {
-                        try {
-                            String builderUUID = builderTask.getBuilderUUIDByName(args[1]);
-                            if(builderUUID != null) {
-                                builderTask.removeBuilder(builderUUID);
-                                sender.sendMessage(Messages.builderRemoved);
-                            } else {
-                                sender.sendMessage(Messages.builderRemovedNotExists);
-                            }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            sender.sendMessage(Messages.builderRemovedFailure);
-                        }
-                    } else {
-                        sender.sendMessage(Messages.builderMissingArgument);
-                    }
-                }
-
-                if(option.equalsIgnoreCase("list")) {
-                    try {
-                        ResultSet listResult = builderTask.getAllBuilder();
-                        if(listResult.next()) {
-                            sender.sendMessage(Messages.builderListHeader);
-                            listResult.beforeFirst();
-                            while (listResult.next()) {
-                                sender.sendMessage(Messages.builderListPlayer.replace("[player]", listResult.getString("Name")));
-                            }
-                        } else {
-                            sender.sendMessage(Messages.builderListNoPlayers);
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        sender.sendMessage(Messages.builderListError);
-                    }
-                }
-
-            } else {
-                //No argument
-                sender.sendMessage(Messages.builderNoOption);
-            }
-        } else {
-            //No Permission
+        if (!sender.hasPermission("buildertask.builder.edit")) {
             sender.sendMessage(Messages.noPermission);
+            return true;
+        }
+
+        if (args.length != 0) {
+            String option = args[0];
+
+            if (option.equalsIgnoreCase("add")) {
+                if (args.length != 2) {
+                    sender.sendMessage(Messages.builderMissingArgument);
+                    return true;
+                }
+                Player player = Bukkit.getPlayer(args[1]);
+
+                if (player == null) {
+                    sender.sendMessage(Messages.playerNotOnline);
+                    return true;
+                }
+                try {
+                    builderTask.createBuilder(player.getUniqueId(), player.getName());
+                    sender.sendMessage(Messages.builderCreated);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.builderCreatedFailure);
+                }
+            }
+
+            if (option.equalsIgnoreCase("remove")) {
+                if (args.length != 2) {
+                    sender.sendMessage(Messages.builderMissingArgument);
+                }
+                try {
+                    String builderUUID = builderTask.getBuilderUUIDByName(args[1]);
+                    if (builderUUID == null) {
+                        sender.sendMessage(Messages.builderRemovedNotExists);
+                        return true;
+                    }
+
+                    builderTask.removeBuilder(builderUUID);
+                    sender.sendMessage(Messages.builderRemoved);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.builderRemovedFailure);
+                }
+            }
+
+            if (option.equalsIgnoreCase("list")) {
+                try {
+                    ResultSet listResult = builderTask.getAllBuilder();
+                    if (listResult.next()) {
+                        sender.sendMessage(Messages.builderListHeader);
+                        listResult.beforeFirst();
+                        while (listResult.next()) {
+                            sender.sendMessage(Messages.builderListPlayer.replace("[player]", listResult.getString("Name")));
+                        }
+                    } else {
+                        sender.sendMessage(Messages.builderListNoPlayers);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.builderListError);
+                }
+            }
+
+        } else {
+            sender.sendMessage(Messages.builderNoOption);
         }
 
         return false;
