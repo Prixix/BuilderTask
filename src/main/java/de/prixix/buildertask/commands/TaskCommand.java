@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class TaskCommand implements CommandExecutor {
 
@@ -22,7 +23,7 @@ public class TaskCommand implements CommandExecutor {
 
             if(option.equalsIgnoreCase("create")) {
                 if(sender.hasPermission("buildertask.task.create")) {
-                    if (args.length == 3) {
+                    if (args.length >= 2) {
                         String uuid = "Console";
 
                         if (sender instanceof Player) {
@@ -48,6 +49,27 @@ public class TaskCommand implements CommandExecutor {
                     }
                 } else {
                     sender.sendMessage(Messages.noPermission);
+                }
+            }
+
+            if(option.equalsIgnoreCase("assign")) {
+                if(args.length == 3) {
+                    if(sender.hasPermission("buildertask.task.assign")) {
+                        try {
+                            String uuid = builderTask.getBuilderUUIDByName(args[1]);
+
+                            if(uuid != null) {
+                                builderTask.assignTask(uuid, Integer.parseInt(args[2]));
+                                sender.sendMessage(Messages.taskAssignedSuccess.replace("[player]", Objects.requireNonNull(builderTask.getBuilderNameByUUID(uuid))));
+                            } else {
+                                sender.sendMessage(Messages.builderDoesNotExists);
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    sender.sendMessage(Messages.syntaxError);
                 }
             }
         } else {

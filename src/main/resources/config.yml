@@ -18,6 +18,7 @@ Messages:
   BuilderRemoved: "&aThe builder has been removed."
   BuilderRemovedNotExists: "&cThe player is not registered."
   BuilderRemovedFailure: "&cError while removing the builder."
+  BuilderDoesNotExists: "&cThe builder is not registered."
   BuilderListHeader: "The current builder list:"
   BuilderListPlayer: "&7-> &e[player]"
   BuilderListError: "&cError while listing player."
@@ -25,3 +26,4 @@ Messages:
   TaskCreationFailure: "&cError while creating the task."
   TaskCreationWorldNotExists: "&cThe selected world does not exist."
   TaskCreationSuccess: "The task has been created with id [id]."
+  TaskAssignedSuccess: "The task has been assigned to [player]."

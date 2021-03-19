@@ -84,6 +84,14 @@ public final class BuilderTask extends JavaPlugin {
 
         try {
             connection.createStatement().execute(
+                    "CREATE TABLE IF NOT EXISTS `builder` (\n" +
+                            "\t`UUID` VARCHAR(255) NOT NULL,\n" +
+                            "\t`Name` VARCHAR(255) NOT NULL,\n" +
+                            "\t`Registered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                            "\tPRIMARY KEY (`UUID`)\n" +
+                            ");");
+
+            connection.createStatement().execute(
                     "CREATE TABLE IF NOT EXISTS `task` (\n" +
                             "\t`TaskID` INT(255) NOT NULL AUTO_INCREMENT,\n" +
                             "\t`Name` VARCHAR(255) NOT NULL,\n" +
@@ -94,15 +102,8 @@ public final class BuilderTask extends JavaPlugin {
                             "\t`Assignee` VARCHAR(255),\n" +
                             "\t`Creator` VARCHAR(255),\n" +
                             "\t`Status` ENUM('opened', 'on hold', 'closed') DEFAULT 'opened', \n" +
-                            "\tPRIMARY KEY (`TaskID`)\n" +
-                            ");");
-
-            connection.createStatement().execute(
-                    "CREATE TABLE IF NOT EXISTS `builder` (\n" +
-                            "\t`UUID` VARCHAR(255) NOT NULL,\n" +
-                            "\t`Name` VARCHAR(255) NOT NULL,\n" +
-                            "\t`Registered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-                            "\tPRIMARY KEY (`UUID`)\n" +
+                            "\tPRIMARY KEY (`TaskID`),\n" +
+                            "\tFOREIGN KEY (Assignee) REFERENCES builder(UUID)" +
                             ");");
         } catch (SQLException ignored) {}
     }
@@ -134,7 +135,16 @@ public final class BuilderTask extends JavaPlugin {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM builder WHERE Name='" + name + "';");
 
         if(resultSet.next()) return resultSet.getString("UUID");
+        return null;
+    }
 
+    public String getBuilderNameByUUID(String uuid) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM builder WHERE UUID='" + uuid + "'");
+
+        if(resultSet.next()) return resultSet.getString("Name");
         return null;
     }
 
@@ -152,6 +162,14 @@ public final class BuilderTask extends JavaPlugin {
         }
 
         return resultId;
+    }
+
+    public void assignTask(String uuid, int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        statement.executeUpdate("UPDATE task SET Assignee = '" + uuid + "' WHERE TaskID = " + taskId);
     }
 
     @Override

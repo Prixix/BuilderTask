@@ -11,6 +11,7 @@ public class Messages {
 
     public static String builderNoOption = Messages.prefix + formatStringToChat(getMessageString("BuilderNoOption"));
     public static String builderMissingArgument = Messages.prefix + formatStringToChat(getMessageString("BuilderMissingArgument"));
+    public static String builderDoesNotExists = Messages.prefix + formatStringToChat(getMessageString("BuilderDoesNotExists"));
 
     public static String builderCreated = Messages.prefix + formatStringToChat(getMessageString("BuilderCreated"));
     public static String builderCreatedFailure = Messages.prefix + formatStringToChat(getMessageString("BuilderCreatedFailure"));
@@ -27,6 +28,7 @@ public class Messages {
     public static String taskCreationFailure = Messages.prefix + formatStringToChat(getMessageString("TaskCreationFailure"));
     public static String taskCreationWorldNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskCreationWorldNotExists"));
     public static String taskCreationSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskCreationSuccess"));
+    public static String taskAssignedSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskAssignedSuccess"));
 
 
 
