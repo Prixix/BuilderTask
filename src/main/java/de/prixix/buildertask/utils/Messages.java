@@ -26,8 +26,10 @@ public class Messages {
     public static String builderListNoPlayers = Messages.prefix + formatStringToChat(getMessageString("BuilderListNoPlayers"));
 
     public static String taskCreationFailure = Messages.prefix + formatStringToChat(getMessageString("TaskCreationFailure"));
-    public static String taskCreationWorldNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskCreationWorldNotExists"));
+    public static String taskDoesNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskDoesNotExists"));
     public static String taskCreationSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskCreationSuccess"));
+    public static String taskWorldNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskWorldNotExists"));
+    public static String taskWorldSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskWorldSuccess"));
     public static String taskAssignedSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskAssignedSuccess"));
 
 

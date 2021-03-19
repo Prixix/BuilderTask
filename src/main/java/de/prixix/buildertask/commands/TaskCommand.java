@@ -2,6 +2,7 @@ package de.prixix.buildertask.commands;
 
 import de.prixix.buildertask.BuilderTask;
 import de.prixix.buildertask.utils.Messages;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,12 +45,9 @@ public class TaskCommand implements CommandExecutor {
                             e.printStackTrace();
                             sender.sendMessage(Messages.taskCreationFailure);
                         }
-                    } else {
-                        sender.sendMessage(Messages.syntaxError);
-                    }
-                } else {
-                    sender.sendMessage(Messages.noPermission);
-                }
+                    } else sender.sendMessage(Messages.syntaxError);
+
+                } else sender.sendMessage(Messages.noPermission);
             }
 
             if(option.equalsIgnoreCase("assign")) {
@@ -61,20 +59,39 @@ public class TaskCommand implements CommandExecutor {
                             if(uuid != null) {
                                 builderTask.assignTask(uuid, Integer.parseInt(args[2]));
                                 sender.sendMessage(Messages.taskAssignedSuccess.replace("[player]", Objects.requireNonNull(builderTask.getBuilderNameByUUID(uuid))));
-                            } else {
-                                sender.sendMessage(Messages.builderDoesNotExists);
-                            }
+
+                            } else sender.sendMessage(Messages.builderDoesNotExists);
+
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                     }
-                } else {
-                    sender.sendMessage(Messages.syntaxError);
+                } else sender.sendMessage(Messages.syntaxError);
+            }
+
+            if(option.equalsIgnoreCase("setworld")) {
+                if(args.length == 3) {
+                    if(sender.hasPermission("buildertask.task.setworld")) {
+                        try {
+                            World world = builderTask.getServer().getWorld(args[1]);
+                            int taskId = Integer.parseInt(args[2]);
+
+                            if(world != null) {
+                                if(builderTask.doesTaskExist(taskId)) {
+                                    builderTask.setWorldTask(world.getName(), taskId);
+                                    sender.sendMessage(Messages.taskWorldSuccess);
+
+                                } else sender.sendMessage(Messages.taskDoesNotExists);
+
+                            } else sender.sendMessage(Messages.taskWorldNotExists);
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        } else {
-            sender.sendMessage(Messages.syntaxError);
-        }
+        } else sender.sendMessage(Messages.syntaxError);
 
         return false;
     }

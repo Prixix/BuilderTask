@@ -172,6 +172,23 @@ public final class BuilderTask extends JavaPlugin {
         statement.executeUpdate("UPDATE task SET Assignee = '" + uuid + "' WHERE TaskID = " + taskId);
     }
 
+    public boolean doesTaskExist(int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM task WHERE TaskID = " + taskId);
+
+        return resultSet.next();
+    }
+
+    public void setWorldTask(String worldName, int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        statement.executeUpdate("UPDATE task SET World = '" + worldName + "' WHERE TaskId = " + taskId);
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
