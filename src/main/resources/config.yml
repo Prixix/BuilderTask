@@ -24,4 +24,4 @@ Messages:
   BuilderListNoPlayers: "No Player is registered."
   TaskCreationFailure: "&cError while creating the task."
   TaskCreationWorldNotExists: "&cThe selected world does not exist."
-  TaskCreationSuccess: "The task has been created."
+  TaskCreationSuccess: "The task has been created with id [id]."

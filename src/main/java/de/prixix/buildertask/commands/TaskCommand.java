@@ -25,22 +25,23 @@ public class TaskCommand implements CommandExecutor {
                     if (args.length == 3) {
                         String uuid = "Console";
 
-                        if(sender instanceof Player) {
+                        if (sender instanceof Player) {
                             Player player = (Player) sender;
                             uuid = player.getUniqueId().toString();
                         }
 
-                        if(builderTask.getServer().getWorld(args[2]) != null) {
-                            try {
-                                builderTask.createTask(uuid, args[1], args[2]);
-                                sender.sendMessage(Messages.taskCreationSuccess);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                sender.sendMessage(Messages.taskCreationFailure);
+                        try {
+                            StringBuilder name = new StringBuilder(args[1]);
+                            for (int i = 2; i < args.length; i++) {
+                                if (!args[i].isEmpty()) {
+                                    name.append(" ").append(args[i]);
+                                }
                             }
-                        } else {
-                            // World does not exits
-                            sender.sendMessage(Messages.taskCreationWorldNotExists);
+
+                            sender.sendMessage(Messages.taskCreationSuccess.replace("[id]", String.valueOf(builderTask.createTask(uuid, name))));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            sender.sendMessage(Messages.taskCreationFailure);
                         }
                     } else {
                         sender.sendMessage(Messages.syntaxError);
@@ -49,7 +50,6 @@ public class TaskCommand implements CommandExecutor {
                     sender.sendMessage(Messages.noPermission);
                 }
             }
-
         } else {
             sender.sendMessage(Messages.syntaxError);
         }

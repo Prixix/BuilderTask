@@ -85,16 +85,17 @@ public final class BuilderTask extends JavaPlugin {
         try {
             connection.createStatement().execute(
                     "CREATE TABLE IF NOT EXISTS `task` (\n" +
-                    "\t`TaskID` INT(255) NOT NULL AUTO_INCREMENT,\n" +
-                    "\t`Name` VARCHAR(255) NOT NULL,\n" +
-                    "\t`World` VARCHAR(255) NOT NULL,\n" +
-                    "\t`Description` VARCHAR(255) NOT NULL DEFAULT '/',\n" +
-                    "\t`expiryDate` TIMESTAMP,\n" +
-                    "\t`creationDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n" +
-                    "\t`Assignee` VARCHAR(255),\n" +
-                    "\t`Creator` VARCHAR(255),\n" +
-                    "\tPRIMARY KEY (`TaskID`)\n" +
-                    ");");
+                            "\t`TaskID` INT(255) NOT NULL AUTO_INCREMENT,\n" +
+                            "\t`Name` VARCHAR(255) NOT NULL,\n" +
+                            "\t`World` VARCHAR(255) NOT NULL DEFAULT '/',\n" +
+                            "\t`Description` VARCHAR(255) NOT NULL DEFAULT '/',\n" +
+                            "\t`expiryDate` TIMESTAMP DEFAULT 0,\n" +
+                            "\t`creationDate` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n" +
+                            "\t`Assignee` VARCHAR(255),\n" +
+                            "\t`Creator` VARCHAR(255),\n" +
+                            "\t`Status` ENUM('opened', 'on hold', 'closed') DEFAULT 'opened', \n" +
+                            "\tPRIMARY KEY (`TaskID`)\n" +
+                            ");");
 
             connection.createStatement().execute(
                     "CREATE TABLE IF NOT EXISTS `builder` (\n" +
@@ -137,10 +138,20 @@ public final class BuilderTask extends JavaPlugin {
         return null;
     }
 
-    public void createTask(String uuid, String name, String world) throws SQLException {
+    public int createTask(String uuid, StringBuilder name) throws SQLException {
         Connection connection = MySQL.getConnection();
 
-        connection.createStatement().execute("INSERT INTO task (Name, World, Creator) VALUES ('" + name + "', '" + world + "', '" + uuid + "');");
+        Statement statement = connection.createStatement();
+
+        statement.executeUpdate("INSERT INTO task (Name, Creator) VALUES ('" + name + "', '" + uuid + "');", Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet resultSet = statement.getGeneratedKeys();
+        int resultId = 0;
+        if (resultSet.next()) {
+            resultId = resultSet.getInt(1);
+        }
+
+        return resultId;
     }
 
     @Override
