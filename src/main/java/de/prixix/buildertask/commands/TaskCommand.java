@@ -45,9 +45,13 @@ public class TaskCommand implements CommandExecutor {
                             e.printStackTrace();
                             sender.sendMessage(Messages.taskCreationFailure);
                         }
-                    } else sender.sendMessage(Messages.syntaxError);
+                    } else {
+                        sender.sendMessage(Messages.syntaxError);
+                    }
 
-                } else sender.sendMessage(Messages.noPermission);
+                } else {
+                    sender.sendMessage(Messages.noPermission);
+                }
             }
 
             if(option.equalsIgnoreCase("assign")) {
@@ -60,13 +64,17 @@ public class TaskCommand implements CommandExecutor {
                                 builderTask.assignTask(uuid, Integer.parseInt(args[2]));
                                 sender.sendMessage(Messages.taskAssignedSuccess.replace("[player]", Objects.requireNonNull(builderTask.getBuilderNameByUUID(uuid))));
 
-                            } else sender.sendMessage(Messages.builderDoesNotExists);
+                            } else {
+                                sender.sendMessage(Messages.builderDoesNotExists);
+                            }
 
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
                     }
-                } else sender.sendMessage(Messages.syntaxError);
+                } else {
+                    sender.sendMessage(Messages.syntaxError);
+                }
             }
 
             if(option.equalsIgnoreCase("setworld")) {
@@ -81,9 +89,13 @@ public class TaskCommand implements CommandExecutor {
                                     builderTask.setWorldTask(world.getName(), taskId);
                                     sender.sendMessage(Messages.taskWorldSuccess);
 
-                                } else sender.sendMessage(Messages.taskDoesNotExists);
+                                } else {
+                                    sender.sendMessage(Messages.taskDoesNotExists);
+                                }
 
-                            } else sender.sendMessage(Messages.taskWorldNotExists);
+                            } else {
+                                sender.sendMessage(Messages.taskWorldNotExists);
+                            }
 
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -91,7 +103,9 @@ public class TaskCommand implements CommandExecutor {
                     }
                 }
             }
-        } else sender.sendMessage(Messages.syntaxError);
+        } else {
+            sender.sendMessage(Messages.syntaxError);
+        }
 
         return false;
     }
