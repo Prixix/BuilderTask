@@ -31,6 +31,8 @@ public class Messages {
     public static String taskWorldNotExists = Messages.prefix + formatStringToChat(getMessageString("TaskWorldNotExists"));
     public static String taskWorldSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskWorldSuccess"));
     public static String taskAssignedSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskAssignedSuccess"));
+    public static String taskDeletedSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskDeletedSuccess"));
+    public static String taskDeletedFailure = Messages.prefix + formatStringToChat(getMessageString("TaskDeletedFailure"));
 
 
 

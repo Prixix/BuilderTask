@@ -39,15 +39,18 @@ public class BuilderCommand implements CommandExecutor {
                 try {
                     builderTask.createBuilder(player.getUniqueId(), player.getName());
                     sender.sendMessage(Messages.builderCreated);
+                    return false;
                 } catch (SQLException e) {
                     e.printStackTrace();
                     sender.sendMessage(Messages.builderCreatedFailure);
+                    return true;
                 }
             }
 
             if (option.equalsIgnoreCase("remove")) {
                 if (args.length != 2) {
                     sender.sendMessage(Messages.builderMissingArgument);
+                    return true;
                 }
                 try {
                     String builderUUID = builderTask.getBuilderUUIDByName(args[1]);
@@ -58,9 +61,11 @@ public class BuilderCommand implements CommandExecutor {
 
                     builderTask.removeBuilder(builderUUID);
                     sender.sendMessage(Messages.builderRemoved);
+                    return false;
                 } catch (SQLException e) {
                     e.printStackTrace();
                     sender.sendMessage(Messages.builderRemovedFailure);
+                    return true;
                 }
             }
 
@@ -73,17 +78,21 @@ public class BuilderCommand implements CommandExecutor {
                         while (listResult.next()) {
                             sender.sendMessage(Messages.builderListPlayer.replace("[player]", listResult.getString("Name")));
                         }
+                        return false;
                     } else {
                         sender.sendMessage(Messages.builderListNoPlayers);
+                        return true;
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                     sender.sendMessage(Messages.builderListError);
+                    return true;
                 }
             }
 
         } else {
             sender.sendMessage(Messages.builderNoOption);
+            return true;
         }
 
         return false;

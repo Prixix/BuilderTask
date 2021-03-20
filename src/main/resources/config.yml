@@ -29,3 +29,5 @@ Messages:
   TaskWorldSuccess: "The world has successfully been bound to the task."
   TaskCreationSuccess: "The task has been created with id [id]."
   TaskAssignedSuccess: "The task has been assigned to [player]."
+  TaskDeletedSuccess: "The task has been deleted."
+  TaskDeletedFailure: "The task could not be deleted."

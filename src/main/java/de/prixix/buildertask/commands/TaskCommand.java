@@ -45,12 +45,15 @@ public class TaskCommand implements CommandExecutor {
                         }
 
                         sender.sendMessage(Messages.taskCreationSuccess.replace("[id]", String.valueOf(builderTask.createTask(uuid, name))));
+                        return false;
                     } catch (SQLException e) {
                         e.printStackTrace();
                         sender.sendMessage(Messages.taskCreationFailure);
+                        return true;
                     }
                 } else {
                     sender.sendMessage(Messages.syntaxError);
+                    return true;
                 }
             }
 
@@ -74,9 +77,11 @@ public class TaskCommand implements CommandExecutor {
                     }
                     builderTask.assignTask(uuid, Integer.parseInt(args[2]));
                     sender.sendMessage(Messages.taskAssignedSuccess.replace("[player]", Objects.requireNonNull(builderTask.getBuilderNameByUUID(uuid))));
+                    return false;
 
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    return true;
                 }
             }
 
@@ -107,14 +112,47 @@ public class TaskCommand implements CommandExecutor {
 
                     builderTask.setWorldTask(world.getName(), taskId);
                     sender.sendMessage(Messages.taskWorldSuccess);
+                    return false;
 
 
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    return true;
                 }
             }
+
+            if(option.equalsIgnoreCase("delete")) {
+                if(args.length != 2) {
+                    sender.sendMessage(Messages.syntaxError);
+                    return true;
+                }
+
+                if (!sender.hasPermission("buildertask.task.delete")) {
+                    sender.sendMessage(Messages.noPermission);
+                    return true;
+                }
+
+                try {
+                    int taskId = Integer.parseInt(args[1]);
+
+                    if(!builderTask.doesTaskExist(taskId)) {
+                        sender.sendMessage(Messages.taskDoesNotExists);
+                        return true;
+                    }
+
+                    builderTask.deleteTask(taskId);
+                    sender.sendMessage(Messages.taskDeletedSuccess);
+                    return false;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.taskDeletedFailure);
+                    return true;
+                }
+            }
+
         } else {
             sender.sendMessage(Messages.syntaxError);
+            return true;
         }
 
         return false;

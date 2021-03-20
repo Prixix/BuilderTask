@@ -189,6 +189,14 @@ public final class BuilderTask extends JavaPlugin {
         statement.executeUpdate("UPDATE task SET World = '" + worldName + "' WHERE TaskId = " + taskId);
     }
 
+    public void deleteTask(int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        statement.execute("DELETE FROM task WHERE TaskId = " + taskId);
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic
