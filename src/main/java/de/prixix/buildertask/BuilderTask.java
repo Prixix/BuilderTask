@@ -4,6 +4,7 @@ import de.prixix.buildertask.commands.BuilderCommand;
 import de.prixix.buildertask.commands.TaskCommand;
 import de.prixix.buildertask.utils.Messages;
 import de.prixix.buildertask.utils.MySQL;
+import de.prixix.buildertask.utils.TASKSTATES;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -164,6 +165,15 @@ public final class BuilderTask extends JavaPlugin {
         return resultId;
     }
 
+    public boolean doesBuilderExist(String uuid) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM builder WHERE UUID = '" + uuid + "'");
+
+        return resultSet.next();
+    }
+
     public void assignTask(String uuid, int taskId) throws SQLException {
         Connection connection = MySQL.getConnection();
 
@@ -195,6 +205,24 @@ public final class BuilderTask extends JavaPlugin {
         Statement statement = connection.createStatement();
 
         statement.execute("DELETE FROM task WHERE TaskId = " + taskId);
+    }
+
+    public String getTaskAssignee(int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM task WHERE TaskId = " + taskId);
+
+        if(resultSet.next()) return resultSet.getString("Assignee");
+        return null;
+    }
+
+    public void setTaskState(int taskId, TASKSTATES taskState) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        statement.executeUpdate("UPDATE task SET Status = '" + taskState + "' WHERE TaskId = " + taskId);
     }
 
     @Override

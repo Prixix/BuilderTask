@@ -6,12 +6,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BuilderCommand implements CommandExecutor {
+public class BuilderCommand implements CommandExecutor, TabExecutor {
 
     private BuilderTask builderTask = BuilderTask.getInstance();
 
@@ -96,5 +99,35 @@ public class BuilderCommand implements CommandExecutor {
         }
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String option = args[0];
+        ArrayList<String> arguments = new ArrayList<>();
+
+        if(args.length == 1) {
+            arguments.add("add");
+            arguments.add("remove");
+            arguments.add("list");
+
+            return arguments;
+        }
+
+        if(args.length == 2) {
+            if(option.equalsIgnoreCase("list")) {
+                return null;
+            }
+
+            if(option.equalsIgnoreCase("add")) {
+                for(Player player : Bukkit.getOnlinePlayers()) {
+                    arguments.add(player.getName());
+                }
+
+                return arguments;
+            }
+        }
+
+        return null;
     }
 }
