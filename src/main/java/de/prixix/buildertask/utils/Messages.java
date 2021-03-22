@@ -37,6 +37,8 @@ public class Messages {
     public static String taskSubmitError = Messages.prefix + formatStringToChat(getMessageString("TaskSubmitError"));
     public static String taskSubmitSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskSubmitSuccess"));
     public static String taskSubmitNotAssigned = Messages.prefix + formatStringToChat(getMessageString("TaskSubmitNotAssigned"));
+    public static String taskDescriptionSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskDescriptionSuccess"));
+    public static String taskDescriptionFailure = Messages.prefix + formatStringToChat(getMessageString("TaskDescriptionFailure"));
 
 
 

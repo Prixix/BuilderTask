@@ -205,6 +205,47 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                 }
             }
 
+            if(option.equalsIgnoreCase("description")) {
+                if(args.length <= 2) {
+                    sender.sendMessage(Messages.syntaxError);
+                    return true;
+                }
+
+                if(!sender.hasPermission("builder.task.description")) {
+                    sender.sendMessage(Messages.noPermission);
+                    return true;
+                }
+
+                try {
+                    int taskId = Integer.parseInt(args[1]);
+
+                    if(!builderTask.doesTaskExist(taskId)) {
+                        sender.sendMessage(Messages.taskDoesNotExists);
+                        return true;
+                    }
+
+                    StringBuilder description = new StringBuilder(args[2]);
+
+                    for(int i = 3; i < args.length; i++) {
+                        if(!args[i].isEmpty()) {
+                            description.append(" ").append(args[i]);
+                        }
+                    }
+
+                    builderTask.setTaskDescription(taskId, description.toString());
+                    sender.sendMessage(Messages.taskDescriptionSuccess);
+                    return false;
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.taskDescriptionFailure);
+                    return true;
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(Messages.taskIdWrongFormat);
+                    return true;
+                }
+            }
+
         } else {
             sender.sendMessage(Messages.syntaxError);
             return true;
@@ -223,6 +264,7 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
             arguments.add("setworld");
             arguments.add("delete");
             arguments.add("submit");
+            arguments.add("description");
 
             return arguments;
         }

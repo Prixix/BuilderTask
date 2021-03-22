@@ -35,3 +35,5 @@ Messages:
   TaskSubmitError: "&cCould not submit the task."
   TaskSubmitSuccess: "&aTask submitted successfully."
   TaskSubmitNotAssigned: "&cThe task is not assigned to you."
+  TaskDescriptionSuccess: "The task description has been changed."
+  TaskDescriptionFailure: "&cThe task description could not be changed."
