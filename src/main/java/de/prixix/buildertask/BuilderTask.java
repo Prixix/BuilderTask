@@ -241,6 +241,14 @@ public final class BuilderTask extends JavaPlugin {
         return statement.executeQuery("SELECT * FROM task WHERE Assignee ='" + uuid + "'");
     }
 
+    public ResultSet getTaskById(int taskId) throws SQLException {
+        Connection connection = MySQL.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        return statement.executeQuery("SELECT * FROM task WHERE TaskID = " + taskId);
+    }
+
     @Override
     public void onDisable() {
         // Plugin shutdown logic

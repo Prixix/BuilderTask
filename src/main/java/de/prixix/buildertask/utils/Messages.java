@@ -43,7 +43,15 @@ public class Messages {
     public static String taskCloseSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskCloseSuccess"));
     public static String taskCloseFailure = Messages.prefix + formatStringToChat(getMessageString("TaskCloseFailure"));
     public static String taskListHeader = Messages.prefix + formatStringToChat(getMessageString("TaskListHeader"));
-
+    public static String taskListName = Messages.prefix + formatStringToChat(getMessageString("TaskListName"));
+    public static String taskListWorld = Messages.prefix + formatStringToChat(getMessageString("TaskListWorld"));
+    public static String taskListDescription = Messages.prefix + formatStringToChat(getMessageString("TaskListDescription"));
+    public static String taskListExpiry = Messages.prefix + formatStringToChat(getMessageString("TaskListExpiryDate"));
+    public static String taskListNoResult = Messages.prefix + formatStringToChat(getMessageString("TaskListNoResult"));
+    public static String taskListAssignee = Messages.prefix + formatStringToChat(getMessageString("TaskListAssignee"));
+    public static String taskListId = Messages.prefix + formatStringToChat(getMessageString("TaskListId"));
+    public static String taskInfoHeader = Messages.prefix + formatStringToChat(getMessageString("TaskInfoHeader"));
+    public static String taskInfoFailure = Messages.prefix + formatStringToChat(getMessageString("TaskInfoFailure"));
 
 
     private static String getMessageString(String name) {

@@ -294,7 +294,7 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                         ResultSet resultSet = builderTask.getTaskOpenTasksFromPlayer(uuid);
 
                         if (!resultSet.next()) {
-                            sender.sendMessage("No results");
+                            sender.sendMessage(Messages.taskListNoResult);
                             return true;
                         }
                         resultSet.beforeFirst();
@@ -302,12 +302,12 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                         sender.sendMessage(Messages.taskListHeader.replace("[player]", sender.getName()));
                         sender.sendMessage("");
                         while (resultSet.next()) {
-                            sender.sendMessage("-> Name: " + resultSet.getString("Name"));
-                            sender.sendMessage("-> World: " + resultSet.getString("World"));
-                            sender.sendMessage("-> Description: " + resultSet.getString("Description"));
+                            sender.sendMessage(Messages.taskListName.replace("[name]", resultSet.getString("Name")));
+                            sender.sendMessage(Messages.taskListWorld.replace("[world]", resultSet.getString("World")));
+                            sender.sendMessage(Messages.taskListDescription.replace("[description]", resultSet.getString("Description")));
 
                             if (resultSet.getTimestamp("expiryDate") != null) {
-                                sender.sendMessage("-> Due to: " + resultSet.getTimestamp("expiryDate"));
+                                sender.sendMessage(Messages.taskListExpiry.replace("[time]", resultSet.getTimestamp("expiryDate").toString()));
                             }
 
                             sender.sendMessage("");
@@ -317,7 +317,7 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                     }
 
                     if (args.length == 2) {
-                        if(sender.hasPermission("buildertask.task.viewother")) {
+                        if(!sender.hasPermission("buildertask.task.viewother")) {
                             sender.sendMessage(Messages.noPermission);
                             return true;
                         }
@@ -332,20 +332,19 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                         ResultSet resultSet = builderTask.getTaskOpenTasksFromPlayer(uuidBuilder);
 
                         if (!resultSet.next()) {
-                            sender.sendMessage("No results");
+                            sender.sendMessage(Messages.taskListNoResult);
                             return true;
                         }
                         resultSet.beforeFirst();
 
                         sender.sendMessage(Messages.taskListHeader.replace("[player]", builderTask.getBuilderNameByUUID(uuidBuilder)));
-                        sender.sendMessage("");
                         while (resultSet.next()) {
-                            sender.sendMessage("-> Name: " + resultSet.getString("Name"));
-                            sender.sendMessage("-> World: " + resultSet.getString("World"));
-                            sender.sendMessage("-> Description: " + resultSet.getString("Description"));
+                            sender.sendMessage(Messages.taskListName.replace("[name]", resultSet.getString("Name")));
+                            sender.sendMessage(Messages.taskListWorld.replace("[world]", resultSet.getString("World")));
+                            sender.sendMessage(Messages.taskListDescription.replace("[description]", resultSet.getString("Description")));
 
                             if (resultSet.getTimestamp("expiryDate") != null) {
-                                sender.sendMessage("-> Due to: " + resultSet.getTimestamp("expiryDate"));
+                                sender.sendMessage(Messages.taskListExpiry.replace("[time]", resultSet.getTimestamp("expiryDate").toString()));
                             }
 
                             sender.sendMessage("");
@@ -362,12 +361,59 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                 }
             }
 
-        } else {
+            if(option.equalsIgnoreCase("info")) {
+                if(args.length != 2) {
+                    sender.sendMessage(Messages.syntaxError);
+                    return true;
+                }
+
+                try {
+                    if (!builderTask.doesBuilderExist(uuid) || !sender.hasPermission("buildertask.task.info")) {
+                        sender.sendMessage(Messages.notRegistered);
+                        return true;
+                    }
+
+                    int taskId = Integer.parseInt(args[1]);
+
+                    if (!builderTask.doesTaskExist(taskId)) {
+                        sender.sendMessage(Messages.taskDoesNotExists);
+                        return true;
+                    }
+
+                    ResultSet resultSet = builderTask.getTaskById(taskId);
+                    resultSet.next();
+
+                    sender.sendMessage(Messages.taskInfoHeader.replace("[id]", String.valueOf(taskId)));
+                    sender.sendMessage(Messages.taskListName.replace("[name]", resultSet.getString("Name")));
+                    sender.sendMessage(Messages.taskListAssignee.replace("[player]", resultSet.getString("Assignee")));
+                    sender.sendMessage(Messages.taskListWorld.replace("[world]", resultSet.getString("World")));
+                    sender.sendMessage(Messages.taskListDescription.replace("[description]", resultSet.getString("Description")));
+
+                    if (resultSet.getTimestamp("expiryDate") != null) {
+                        sender.sendMessage(Messages.taskListExpiry.replace("[time]", resultSet.getTimestamp("expiryDate").toString()));
+                    }
+
+                    sender.sendMessage(Messages.taskListId.replace("[id]", String.valueOf(resultSet.getInt("TaskID"))));
+                    sender.sendMessage("");
+
+                    return false;
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.taskInfoFailure);
+                    return true;
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(Messages.taskIdWrongFormat);
+                    return true;
+                }
+            }
+
+            sender.sendMessage(Messages.syntaxError);
+            return true;
+        }  else {
             sender.sendMessage(Messages.syntaxError);
             return true;
         }
-
-        return false;
     }
 
     @Override
@@ -383,6 +429,7 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
             arguments.add("description");
             arguments.add("close");
             arguments.add("list");
+            arguments.add("info");
 
             return arguments;
         }
