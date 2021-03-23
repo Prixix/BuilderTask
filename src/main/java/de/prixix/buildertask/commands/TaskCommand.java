@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +170,7 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
             if (option.equalsIgnoreCase("submit")) {
                 try {
                     if (!builderTask.doesBuilderExist(uuid)) {
-                        sender.sendMessage("You're not registered");
+                        sender.sendMessage(Messages.notRegistered);
                         return true;
                     }
                     if (args.length != 2) {
@@ -205,13 +206,13 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                 }
             }
 
-            if(option.equalsIgnoreCase("description")) {
-                if(args.length <= 2) {
+            if (option.equalsIgnoreCase("close")) {
+                if (args.length != 2) {
                     sender.sendMessage(Messages.syntaxError);
                     return true;
                 }
 
-                if(!sender.hasPermission("builder.task.description")) {
+                if (!sender.hasPermission("buildertask.task.close")) {
                     sender.sendMessage(Messages.noPermission);
                     return true;
                 }
@@ -219,15 +220,48 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                 try {
                     int taskId = Integer.parseInt(args[1]);
 
-                    if(!builderTask.doesTaskExist(taskId)) {
+                    if (!builderTask.doesTaskExist(taskId)) {
+                        sender.sendMessage(Messages.taskDoesNotExists);
+                        return true;
+                    }
+
+                    builderTask.setTaskState(taskId, TASKSTATES.closed);
+                    sender.sendMessage(Messages.taskCloseSuccess);
+                    return false;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Messages.taskCloseFailure);
+                    return true;
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(Messages.taskIdWrongFormat);
+                    return true;
+                }
+            }
+
+
+            if (option.equalsIgnoreCase("description")) {
+                if (args.length <= 2) {
+                    sender.sendMessage(Messages.syntaxError);
+                    return true;
+                }
+
+                if (!sender.hasPermission("builder.task.description")) {
+                    sender.sendMessage(Messages.noPermission);
+                    return true;
+                }
+
+                try {
+                    int taskId = Integer.parseInt(args[1]);
+
+                    if (!builderTask.doesTaskExist(taskId)) {
                         sender.sendMessage(Messages.taskDoesNotExists);
                         return true;
                     }
 
                     StringBuilder description = new StringBuilder(args[2]);
 
-                    for(int i = 3; i < args.length; i++) {
-                        if(!args[i].isEmpty()) {
+                    for (int i = 3; i < args.length; i++) {
+                        if (!args[i].isEmpty()) {
                             description.append(" ").append(args[i]);
                         }
                     }
@@ -243,6 +277,88 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
                 } catch (NumberFormatException e) {
                     sender.sendMessage(Messages.taskIdWrongFormat);
                     return true;
+                }
+            }
+
+            if (option.equalsIgnoreCase("list")) {
+                try {
+
+
+                    if (args.length == 1) {
+
+                        if (!builderTask.doesBuilderExist(uuid)) {
+                            sender.sendMessage(Messages.notRegistered);
+                            return true;
+                        }
+
+                        ResultSet resultSet = builderTask.getTaskOpenTasksFromPlayer(uuid);
+
+                        if (!resultSet.next()) {
+                            sender.sendMessage("No results");
+                            return true;
+                        }
+                        resultSet.beforeFirst();
+
+                        sender.sendMessage(Messages.taskListHeader.replace("[player]", sender.getName()));
+                        sender.sendMessage("");
+                        while (resultSet.next()) {
+                            sender.sendMessage("-> Name: " + resultSet.getString("Name"));
+                            sender.sendMessage("-> World: " + resultSet.getString("World"));
+                            sender.sendMessage("-> Description: " + resultSet.getString("Description"));
+
+                            if (resultSet.getTimestamp("expiryDate") != null) {
+                                sender.sendMessage("-> Due to: " + resultSet.getTimestamp("expiryDate"));
+                            }
+
+                            sender.sendMessage("");
+                        }
+
+                        return false;
+                    }
+
+                    if (args.length == 2) {
+                        if(sender.hasPermission("buildertask.task.viewother")) {
+                            sender.sendMessage(Messages.noPermission);
+                            return true;
+                        }
+
+                        String uuidBuilder = builderTask.getBuilderUUIDByName(args[1]);
+
+                        if (uuidBuilder == null) {
+                            sender.sendMessage(Messages.builderDoesNotExists);
+                            return true;
+                        }
+
+                        ResultSet resultSet = builderTask.getTaskOpenTasksFromPlayer(uuidBuilder);
+
+                        if (!resultSet.next()) {
+                            sender.sendMessage("No results");
+                            return true;
+                        }
+                        resultSet.beforeFirst();
+
+                        sender.sendMessage(Messages.taskListHeader.replace("[player]", builderTask.getBuilderNameByUUID(uuidBuilder)));
+                        sender.sendMessage("");
+                        while (resultSet.next()) {
+                            sender.sendMessage("-> Name: " + resultSet.getString("Name"));
+                            sender.sendMessage("-> World: " + resultSet.getString("World"));
+                            sender.sendMessage("-> Description: " + resultSet.getString("Description"));
+
+                            if (resultSet.getTimestamp("expiryDate") != null) {
+                                sender.sendMessage("-> Due to: " + resultSet.getTimestamp("expiryDate"));
+                            }
+
+                            sender.sendMessage("");
+                        }
+
+                        return false;
+                    }
+
+                    sender.sendMessage(Messages.syntaxError);
+                    return true;
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -265,6 +381,8 @@ public class TaskCommand implements CommandExecutor, TabExecutor {
             arguments.add("delete");
             arguments.add("submit");
             arguments.add("description");
+            arguments.add("close");
+            arguments.add("list");
 
             return arguments;
         }

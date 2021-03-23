@@ -6,9 +6,10 @@ public class Messages {
 
     public static String prefix = formatStringToChat(getMessageString("Prefix"));
     public static String noPermission = Messages.prefix + formatStringToChat(getMessageString("NoPermission"));
-    public static String playerNotOnline = formatStringToChat(getMessageString("PlayerNotOnline"));
-    public static String syntaxError = formatStringToChat(getMessageString("SyntaxError"));
-    public static String taskIdWrongFormat = formatStringToChat(getMessageString("TaskIdWrongFormat"));
+    public static String playerNotOnline = Messages.prefix + formatStringToChat(getMessageString("PlayerNotOnline"));
+    public static String syntaxError = Messages.prefix + formatStringToChat(getMessageString("SyntaxError"));
+    public static String taskIdWrongFormat = Messages.prefix + formatStringToChat(getMessageString("TaskIdWrongFormat"));
+    public static String notRegistered = Messages.prefix + formatStringToChat(getMessageString("NotRegistered"));
 
     public static String builderNoOption = Messages.prefix + formatStringToChat(getMessageString("BuilderNoOption"));
     public static String builderMissingArgument = Messages.prefix + formatStringToChat(getMessageString("BuilderMissingArgument"));
@@ -39,6 +40,9 @@ public class Messages {
     public static String taskSubmitNotAssigned = Messages.prefix + formatStringToChat(getMessageString("TaskSubmitNotAssigned"));
     public static String taskDescriptionSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskDescriptionSuccess"));
     public static String taskDescriptionFailure = Messages.prefix + formatStringToChat(getMessageString("TaskDescriptionFailure"));
+    public static String taskCloseSuccess = Messages.prefix + formatStringToChat(getMessageString("TaskCloseSuccess"));
+    public static String taskCloseFailure = Messages.prefix + formatStringToChat(getMessageString("TaskCloseFailure"));
+    public static String taskListHeader = Messages.prefix + formatStringToChat(getMessageString("TaskListHeader"));
 
 
 

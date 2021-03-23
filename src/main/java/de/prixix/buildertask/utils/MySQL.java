@@ -19,7 +19,7 @@ public class MySQL {
     public static void connect() {
         if(!isConnected()) {
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?zeroDateTimeBehavior=convertToNull", username, password);
                 buildertask.console.sendMessage(Messages.prefix + "§aMySQL connection successfully connected");
             } catch (Exception e) {
                 e.printStackTrace();
