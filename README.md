@@ -1,35 +1,25 @@
-<h1 align="center">Welcome to BuilderTask 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0--SNAPSHOT-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/Prixix/BuilderTask/blob/main/LICENSE" target="_blank">
-    <img alt="License: Apache License 2.0" src="https://img.shields.io/badge/License-Apache License 2.0-yellow.svg" />
-  </a>
-  <a href="https://twitter.com/xPrixix" target="_blank">
-    <img alt="Twitter: xPrixix" src="https://img.shields.io/twitter/follow/xPrixix.svg?style=social" />
-  </a>
-</p>
+# BuilderTask
 
-> A Spigot plugin to manage your builders!
+**BuilderTask** is a Spigot plugin designed to manage builders in Minecraft. It provides an efficient system for assigning and tracking building tasks, ensuring better project management within the game.
 
-## Author
+## Features
+- Assign tasks to builders
+- Track progress
+- Set deadlines and priorities
+- Manage multiple projects
 
-👤 **Prixix**
+## Installation
+1. Download the latest release from the [releases page](https://github.com/Prixix/BuilderTask/releases).
+2. Place the .jar file into your Minecraft server's plugins folder.
+3. Restart the server.
 
-* Twitter: [@xPrixix](https://twitter.com/xPrixix)
-* Github: [@Prixix](https://github.com/Prixix)
+## Usage
+- `/buildertask add [builder] [task]` - Assign a task to a builder.
+- `/buildertask list [builder]` - List all tasks assigned to a builder.
+- `/buildertask complete [taskID]` - Mark a task as completed.
 
-## 🤝 Contributing
+## Contribution
+Contributions are welcome! Please check the [contributing guide](https://github.com/Prixix/BuilderTask/blob/main/CONTRIBUTING.md) for more details.
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Prixix/BuilderTask/issues). You can also take a look at the [contributing guide](https://github.com/Prixix/BuilderTask/blob/main/CONTRIBUTING.md).
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-## 📝 License
-
-Copyright © 2021 [Prixix](https://github.com/Prixix).<br />
-This project is [Apache License 2.0](https://github.com/Prixix/BuilderTask/blob/main/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+## License
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Prixix/BuilderTask/blob/main/LICENSE) file for details.
