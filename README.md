@@ -13,11 +13,6 @@
 2. Place the .jar file into your Minecraft server's plugins folder.
 3. Restart the server.
 
-## Usage
-- `/buildertask add [builder] [task]` - Assign a task to a builder.
-- `/buildertask list [builder]` - List all tasks assigned to a builder.
-- `/buildertask complete [taskID]` - Mark a task as completed.
-
 ## Contribution
 Contributions are welcome! Please check the [contributing guide](https://github.com/Prixix/BuilderTask/blob/main/CONTRIBUTING.md) for more details.
 
